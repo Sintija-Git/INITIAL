@@ -12,10 +12,24 @@ public class GetOne {
 		// passed number is 6. Path to completion would be:
 		// 6->3->10->5->16->8->4->2->1. Iteration count=8.
 		// HINT: Use while loop.
+		
+//		number = 3;
 		int iterationCount = 0;
+		
+		while(number>1) {
+			
+			if (number % 2 == 0) {
+				number = number/2;
+			} else {
+				number = number*3 +1;
+			}
+			System.out.println(number);
+			iterationCount++;
+		
+	}
 		return iterationCount;
 	}
-
+	
 	public int theMostComplexNo(int maxNumber) {
 		// TODO #2: Calculate how many iterations each number from 1 to
 		// maxNumber (including) to get value till 1.
@@ -24,7 +38,35 @@ public class GetOne {
 		// And return 3, because it has the biggest count of iterations.
 		// (If count of iterations is the same for several numbers, return
 		// smallest number).
+		
+		//iteration method, loop for that time. most complex number store xomplex number
+		
+		
+		
+		
+		int iterationCount = 0;
+		int maxIterations = iterationCount;
+		int num = 1;
+		
+		while(num<=maxNumber) {
+		
+			while(num>1) {
+			
+			if (num % 2 == 0) {
+				num = num/2;
+			} else {
+				num = num*3 +1;
+			}
+			
+			iterationCount++;
+			num++;
+	} //end while
+			
+			if (iterationCount>maxIterations) {
+				
+			}
+		} //end while
+		
 		return 0;
 	}
-
 }
