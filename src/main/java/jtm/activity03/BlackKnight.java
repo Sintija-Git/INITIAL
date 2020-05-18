@@ -114,46 +114,32 @@ public class BlackKnight {
 		// Else return "You'll burn in hell forever!"
 		
 		
-		String message = "";
-		
-		
 		if (!alive) {
-			message = "Only chicken beats dead!";
-		
-		
-		}else if (head==1) {
+			return "Only chicken beats dead!";
+		}
+		if (head > 0) {
 			head--;
 			aliveKnights--;
 			deadKnights++;
-			
+			this.alive = false;
 		}
-	
-		if (aliveKnights>0) {
-			
+		System.out.println("aliveKnights " + aliveKnights);
+		System.out.println("deadKnights " + deadKnights);
+		if (aliveKnights > 0) {
 			String start = "You'l newer win! ";
 			String end = " will still fight!";
-			
-			StringBuilder sb  = new StringBuilder();
-					
-				for(int i = 0; i< knights.length; i++) {
-						if (knights[i].alive) {
-							sb.append(knights[i].name + ", ");
-						}
-					}	
-					
-					sb.setLength(sb.length()-2);
-					message = start + sb.toString() + end;
-				
-					
+			StringBuilder sb = new StringBuilder();
+			String delim = "";
+			for (int i = 0; i < knights.length; i++) {
+				if (knights[i].alive) {
+					sb.append(delim + knights[i].name);
+					delim = ", ";
+				}
+			}
+			System.out.println(start + sb.toString() + end);
+			return start + sb.toString() + end;
 		} else {
-			
-			message = "You'l burn in hell forever!";
+			return "You'l burn in hell forever!";
 		}
-		
-		return message;
-		
-		}
-		
+	}
 }
-
-
