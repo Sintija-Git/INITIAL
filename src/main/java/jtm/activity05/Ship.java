@@ -9,6 +9,7 @@ public class Ship extends Transport {
 	
 	//Allow to store protected byte number of sails for Ship:
 	protected byte numberOfSails;
+
 	
 	//Create Ship(String id, byte sails) constructor,
 	public Ship(String id, byte numberOfSails) {
@@ -22,18 +23,21 @@ public class Ship extends Transport {
 	//ID Ship is sailing on (Road as String) with x sails. where: (Road as String) is string representation of the road 
 	(without brackets), x is actual number of sails.*/
 	//return Cannot sail on (Road as String) if it is not WaterRoad.
+	
 	@Override
 	public String move(Road road) {
 		String message = "";
+		
 		if (road instanceof WaterRoad) { 
-			message =  super.getId() + " " + this.getClass().getSimpleName() + " is sailing on " + 
-					road.toString() + " with " +numberOfSails + " sails";
 			
+			message = super.getType() + " is sailing on " + road.toString() + " with " +numberOfSails + " sails";
+					
 		} else {
 			
-			message = "Cannot sail on " + road.toString();
+		message = "Cannot sail on " + road.toString();
 		
 		}
+		
 		return message;
 	}		
  	

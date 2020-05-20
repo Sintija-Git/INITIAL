@@ -23,18 +23,20 @@ public class Vehicle extends Transport {
 	
 	@Override
 	public String move (Road road) {
-		System.out.println(getConsumption());
+		
 		String message = "";
 		
-		if (road instanceof WaterRoad) {
+		float fuelNeeded = super.getConsumption()*road.getDistance()/100;
+		
+		
+		if (road.getClass() == Road.class && fuelNeeded <= getFuelInTank()) {
+			super.setFuelInTank (getFuelInTank() - fuelNeeded);
 			
-			message =  "Cannot drive on " + road.toString();
-			
+			message = super.getType() + " is driving on " +road.toString() + " with " + numberOfWheels + " wheels";
 		
 		}else {
-		
-			message = super.getId() +" "+ this.getClass().getSimpleName() + " is driving on " +road.toString() + " with " + numberOfWheels + " wheels";
 			
+			message =  "Cannot drive on " + road.toString();
 			
 	}
 			

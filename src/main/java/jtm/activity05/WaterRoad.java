@@ -12,23 +12,19 @@ select both constructors Road() and Road(String,String,int) and press OK.
 public class WaterRoad extends Road {
 
 	public WaterRoad(String from, String to, int distance) {
-		super(from, to, distance);
-		
+		super(from, to, distance);	
 	}
 
-	public WaterRoad() {
-		
-	}
+	public WaterRoad() {}
 	
 	//Select Source — Override/Implement methods... and select method toString().
 	//Override .toString() method which returns string in form: WaterRoad From — To, 00km
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
+		
 		return this.getClass().getSimpleName() + " " + super.toString();
 	}
-	
-	
+		
 
-}
+} //end class
