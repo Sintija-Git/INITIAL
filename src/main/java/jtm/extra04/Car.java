@@ -10,15 +10,18 @@ public class Car {
 	// TODO #1 generate public constructor which takes all properties of an
 	// object as parameters
 	
-	public Car (String model, Integer year, String color, Float price) {
+	public Car(String model, Integer year, String color, Float price) {
+		super();
 		this.model = model;
 		this.year = year;
 		this.color = color;
 		this.price = price;
 	}
 	
-	
 	// TODO #2 generate public getters of all object properties
+	
+
+
 
 
 	public String getModel() {
@@ -38,7 +41,6 @@ public class Car {
 
 	public Float getPrice() {
 		return price;
-	}
-
+	}	
 	
 }
