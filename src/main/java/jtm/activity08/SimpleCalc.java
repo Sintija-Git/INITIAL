@@ -1,5 +1,6 @@
 package jtm.activity08;
 
+import static org.junit.Assert.assertArrayEquals;
 
 // TODO implement basic mathematical operations with int numbers in range
 // of [-10..+10] (including)
@@ -11,33 +12,26 @@ public class SimpleCalc {
 
 	public static int add(int a, int b) throws SimpleCalcException {
 		validateInput(a, b);
-		String operation = "+";
-		validateOutput(a, b, operation);
-		return a + b;
+		return validateOutput(a, b, "+");
+		
 	}
 
 	public static int subtract(int a, int b) throws SimpleCalcException {
 		validateInput(a, b);
-		String operation = "-";
-		validateOutput(a, b, operation);
-		return a - b;
+		return validateOutput(a, b, "-");
 	}
 
 	public static int multiply(int a, int b) throws SimpleCalcException {
 		validateInput(a, b);
-		String operation = "*";
-		validateOutput(a, b, operation);
-		return a * b;
+		return validateOutput(a, b, "*");
 	}
 
 	public static int divide(int a, int b) throws SimpleCalcException {
 		validateInput(a, b);
-		String operation = "/";
-		validateOutput(a, b, operation);
-		return a / b;
+		return validateOutput(a, b, "/");
 	}
 
-	// TODO Validate that inputs are in range of -10..+10 using assertions
+	// Validate that inputs are in range of -10..+10 using assertions
 	// Use following messages for assertion description if values are not in
 	// range:
 	// "input value a: A is below -10"
@@ -62,26 +56,27 @@ public class SimpleCalc {
 	private static void validateInput(int a, int b) {
 
 		if (a < -10 && b < -10) {
-			throw new AssertionError("input value a: " + a + " is below -10 and b: " + b + " is below -10");
+			assert false : "input value a: " + a + " is below -10 and b: " + b + " is below -10";
 		} else if (a > 10 && b < -10) {
-			throw new AssertionError("input value a: " + a + " is above 10 and b: " + b + " is below -10");
+			assert false : "input value a: " + a + " is above 10 and b: " + b + " is below -10";
 		} else if (a < -10 && b > 10) {
-			throw new AssertionError("input value a: " + a + " is below -10 and b: " + b + " is above 10");
+			assert false : "input value a: " + a + " is below -10 and b: " + b + " is above 10";
 		} else if (a > 10 && b > 10) {
-			throw new AssertionError("input value a: " + a + " is above 10 and b: " + b + " is above 10");
+			assert false : "input value a: " + a + " is above 10 and b: " + b + " is above 10";
 		} else if (a < -10) {
-			throw new AssertionError("input value a: " + a + " is below -10");
+			assert false : "input value a: " + a + " is below -10";
 		} else if (a > 10) {
-			throw new AssertionError("input value a: " + a + " is above 10");
+			assert false : "input value a: " + a + " is above 10";
 		} else if (b < -10) {
-			throw new AssertionError("input value b: " + b + " is below -10");
+			assert false : "input value b: " + b + " is below -10";
 		} else if (b > 10) {
-			throw new AssertionError("input value b: " + b + " is above 10");
+			assert false : "input value b: " + b + " is above 10";
 		}
 
-	} // end validateInput
+	} 
 
-	// TODO use this method to check that result of operation is also in
+	
+	// use this method to check that result of operation is also in
 	// range of -10..+10.
 	// If result is not in range:
 	// throw SimpleCalcException with message:
@@ -94,39 +89,53 @@ public class SimpleCalc {
 	// If division by zero is performed, catch original exception and create
 	// new SimpleCalcException with message "division by zero" and add
 	// original division exception as a cause for it.
+	//
 	private static int validateOutput(int a, int b, String operation) throws SimpleCalcException {
 
 		int result = 0;
 
 		try {
-
-			if (operation.contentEquals("+")) {
-				result = a + b;
-			} else if (operation.contentEquals("-")) {
-				result = a - b;
-			} else if (operation.contentEquals("*")) {
-				result = a * b;
-			} else if (operation.contentEquals("/")) {
-				result = a / b;
+			
+			switch (operation) {
+			case "+":
+				result = a+b;
+				break;
+			case "-":
+				result = a-b;
+				break;
+			case "*":
+				result = a*b;
+				break;
+			case "/":
+				result = a/b;
+				break;
+			
 			}
 
-			throw new SimpleCalcException(null);
+//			if (operation.contentEquals("+")) {
+//				result = a + b;
+//			} else if (operation.contentEquals("-")) {
+//				result = a - b;
+//			} else if (operation.contentEquals("*")) {
+//				result = a * b;
+//			} else if (operation.contentEquals("/")) {
+//				result = a / b;
+//			}
 
-		} catch (SimpleCalcException | ArithmeticException e) {
+			
 
-			if (e instanceof SimpleCalcException) {
-				if (result > 10) {
-					throw new SimpleCalcException("output value " + a + " " + operation + " " + b + " " + "=" + " "
-							+ result + " is above 10");
-				} else if (result < -10) {
-					throw new SimpleCalcException("output value " + a + " " + operation + " " + b + " " + "=" + " "
-							+ result + " is below -10");
-				}
-			} else if (e instanceof ArithmeticException) {
-				throw new SimpleCalcException("division by zero", e);
-			}
-
-			return result;
+		} catch ( Exception e) {
+			
+			throw new SimpleCalcException("division by zero", e);
 		}
+				if (result > 10) {
+					throw new SimpleCalcException(
+							"output value " + a + " " + operation + " " + b + " " + "=" + " "+ result + " is above 10");
+				} else if (result < -10) {
+					throw new SimpleCalcException(
+							"output value " + a + " " + operation + " " + b + " " + "=" + " "+ result + " is below -10");
+				}
+			
+		return result;
 	}
 }
