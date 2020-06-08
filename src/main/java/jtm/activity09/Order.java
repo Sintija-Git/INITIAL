@@ -52,7 +52,6 @@ public class Order implements Comparable<Order> {
 			return -1;
 		} else if (result == 0) {
 			result = this.customer.compareTo(object.customer);
-
 			if (result > 0) {
 				return 1;
 			} else if (result < 0) {
@@ -71,7 +70,7 @@ public class Order implements Comparable<Order> {
 		if (object instanceof Order) {
 
 			Order order = (Order) object;
-			return this.name.equals(order.name) && this.customer.equals(order.customer) && this.count == order.count;
+			return this.name.equals(order.name) && this.customer.equals(order.customer) && this.count == order.count; // if (this.compTo(order)==0{ return true
 		} else {
 			return false;
 		}
@@ -81,7 +80,7 @@ public class Order implements Comparable<Order> {
 	@Override
 	public int hashCode() { // — to be able to handle it in some hash...collection
 
-		final int prime = 31;
+		final int prime = 31; //to string().hashCode();
 		int result = 1;
 		result = prime * result + count;
 		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
@@ -96,17 +95,17 @@ public class Order implements Comparable<Order> {
 	}
 
 	
-//	// getters
-//	public String getCustomer() {
-//		return customer;
-//	}
-//
-//	public String getItemName() {
-//		return name;
-//	}
-//
-//	public int getCount() {
-//		return count;
-//	}
+	// getters
+	public String getCustomer() {
+		return customer;
+	}
+
+	public String getItemName() {
+		return name;
+	}
+
+	public int getCount() {
+		return count;
+	}
 
 } // end class

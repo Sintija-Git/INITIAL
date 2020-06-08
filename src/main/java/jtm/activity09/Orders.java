@@ -1,15 +1,16 @@
 package jtm.activity09;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
+import org.apache.bcel.generic.IREM;
 
 /*- TODO #2
  * Implement Iterator interface with Orders class
@@ -41,10 +42,6 @@ import java.util.Set;
 
 public class Orders implements Iterator<Order> {
 
-	String customer; // Name of the customer
-	String name; // Name of the requested item
-	int count; // Count of the requested items
-
 	/*-
 	 * TODO #1
 	 * Create data structure to hold:
@@ -55,13 +52,12 @@ public class Orders implements Iterator<Order> {
 	 *   2. when constructing list of orders, set number of current order to -1
 	 *      (which is usual approach when working with iterateable collections).
 	 */
-
-	List<Order> ordersList = new LinkedList<Order>();
-	ListIterator<Order> itr = ordersList.listIterator();
-
+	private List<Order> ordersList;
+	private int currentOrder;
 
 	public Orders() {
 		ordersList = new LinkedList<Order>();
+		currentOrder = -1;
 	}
 
 	public void add(Order item) { // — add passed order to the Orders
@@ -69,13 +65,11 @@ public class Orders implements Iterator<Order> {
 
 	}
 
+//	ListIterator<Order> itr = ordersList.listIterator();
+
 	public List<Order> getItemsList() { // — List of all customer orders
 		return ordersList;
 
-	}
-
-	public void sort() { // — Use built in List.sort() method to sort list of orders
-		Collections.sort(ordersList);
 	}
 
 	/*
@@ -85,34 +79,56 @@ public class Orders implements Iterator<Order> {
 	 * Customer1,Customer2: 4
 	 */
 	public Set<Order> getItemsSet() { // — calculated Set of Orders from list (look at description below)
-		
-		Set<Order> set = new HashSet<>();
 
-		for (int i = 0; i < ordersList.size(); i++) {
-			Order current = ordersList.get(i);
-			if (!set.contains(current)) {
-				set.add(current);
-				System.out.println(set);
+		Set<Order> orderSet = new LinkedHashSet<Order>();
+
+		Order previousOrder = null;
+		sort();
+
+		for (Order order : ordersList) {
+			if (previousOrder == null) {
+				previousOrder = order;
+				continue;
+			}
+
+			if (order.name.equals(previousOrder.name)) {
+				previousOrder.count += order.count;
+				previousOrder.customer += "," + order.customer;
+			} else {
+				orderSet.add(previousOrder);
+				previousOrder = order;
 			}
 
 		}
-		return set;
+
+		if (previousOrder != null) {
+			orderSet.add(previousOrder);
+		}
+
+		return new LinkedHashSet<Order>(orderSet);
+	}
+
+	public void sort() { // — Use built in List.sort() method to sort list of orders
+		Collections.sort(ordersList);
 	}
 
 	@Override
 	public boolean hasNext() { // — check is there next Order in Orders
-		if (itr.hasNext()) {
+
+		if (ordersList.size() > 0 && currentOrder < ordersList.size()) {
 			return true;
+		} else {
+			return false;
+
 		}
-		return false;
 	}
-	
 
 	@Override
 	public Order next() { // — get next Order from Orders, throw NoSuchElementException if can't
 
-		if (itr.hasNext()) {
-			return itr.next();
+		if (hasNext()) {
+			currentOrder++;
+			return ordersList.get(currentOrder);
 		} else {
 			throw new NoSuchElementException();
 		}
@@ -121,11 +137,11 @@ public class Orders implements Iterator<Order> {
 	public void remove() { // — remove current Order (order got by previous next()) from list, throw
 							// IllegalStateException if can't
 
-		if (itr.hasNext()) {
-			itr.remove();
+		if (currentOrder >= 0 && currentOrder < ordersList.size()) {
+			ordersList.remove(currentOrder);
+			currentOrder--;
 		} else {
 			throw new IllegalStateException();
-
 		}
 	}
 
