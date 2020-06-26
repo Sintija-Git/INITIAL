@@ -63,7 +63,7 @@ public class StudentManager {
 
 		try {
 			conn.setAutoCommit(false);
-			pStatement = conn.prepareStatement("SELECT * FROM database_activity.student WHERE id =?");
+			pStatement = conn.prepareStatement("SELECT * FROM database_activity.student WHERE id = ?");
 			pStatement.setInt(1, id);
 			conn.commit();
 			rSet = pStatement.executeQuery();
@@ -96,6 +96,7 @@ public class StudentManager {
 		// Note, that if nothing is found return empty list!
 		List<Student> studentsList = new ArrayList<Student>();
 		try {
+			conn.setAutoCommit(false);
 			pStatement = conn.prepareStatement(
 					"SELECT * FROM database_activity.student WHERE firstname LIKE ? AND lastname LIKE ?");
 			pStatement.setString(1, "%" + firstName + "%");
@@ -104,7 +105,7 @@ public class StudentManager {
 			rSet = pStatement.executeQuery();
 
 			while (rSet.next()) {
-				studentsList.add(new Student(rSet.getInt(1), rSet.getString(2), rSet.getString(3)));
+				studentsList.add(new Student(rSet.getInt("id"), rSet.getString("firstname"), rSet.getString("lastname")));
 
 			}
 			rSet.close();
@@ -114,7 +115,7 @@ public class StudentManager {
 			log.debug(s.getMessage());
 
 		}
-		System.out.println("nana " + studentsList.toString());
+		
 		return studentsList;
 
 	}
@@ -132,12 +133,13 @@ public class StudentManager {
 		// TODO #4 Write an sql statement that inserts student in database.
 
 		try {
+			
 			pStatement = conn
 					.prepareStatement("INSERT INTO database_activity.student (firstname, lastname) VALUES (?,?)");
 			pStatement.setString(1, firstName);
 			pStatement.setString(2, lastName);
+			pStatement.executeUpdate();
 			conn.commit();
-			rSet = pStatement.executeQuery();
 
 		} catch (SQLException s) {
 			log.debug(s.getMessage());
@@ -160,20 +162,21 @@ public class StudentManager {
 		try {
 
 			pStatement = conn
-					.prepareStatement("INSERT INTO database_ativity.student (id, firstnme, lastname)VALUES (?,?,?)");
-			pStatement.setInt(1, student.getId());
+					.prepareStatement("INSERT INTO database_activity.student (id, firstname, lastname) VALUES (?,?,?)");
+			pStatement.setString(1, Integer.toString(student.getId()));
 			pStatement.setString(2, student.getFirstName());
 			pStatement.setString(3, student.getLastName());
-
-			conn.commit();
 			int rows = pStatement.executeUpdate();
+			conn.commit();
+			
 
 			if (rows == 1) {
-				return true;
+				status = true;
 			}
 
 		} catch (SQLException s) {
 			log.debug(s.getMessage());
+			status = false;
 
 		}
 
@@ -208,6 +211,7 @@ public class StudentManager {
 
 		} catch (SQLException s) {
 			log.debug(s.getMessage());
+			status = false;
 		}
 
 		return status;
