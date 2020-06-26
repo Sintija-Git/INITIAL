@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class Generics<E extends Number> extends LinkedList<E> {
 
-	/**
+	/**	
 	 * 
 	 */
 	private static final long serialVersionUID = 7708818085602746688L;
@@ -28,7 +28,9 @@ public class Generics<E extends Number> extends LinkedList<E> {
 	
 	public Generics() {
 		super();
-		log.append("Generics instance created");
+		if(log==null)
+			log = new StringBuilder("");
+		log.append("Generics instance created\n");
 		
 	}
 
@@ -58,14 +60,15 @@ public class Generics<E extends Number> extends LinkedList<E> {
 	
 	@Override
 	public void push(E e) {
-		super.push(e);
-		log.append("\n" + this.peek().getClass().getName() + ": " + this.peek() + " pushed");
+		super.push(e);	
+		log.append(this.peek().getClass().getName() + ": " + this.peek() + " pushed\n");
+		
 		
 	}
 	
 	@Override
 	public E pop() {
-		log.append("\n" +  this.peek().getClass().getName() +  ": " + this.peek() + " popped");
+		log.append(this.peek().getClass().getName() +  ": " + this.peek() + " popped\n");
 		return super.pop();
 		
 		
