@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -15,9 +16,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 // TODO Annotate class as an @Entity, to say that its instances can be stored in the database.
+@Entity
 public class Invoice {
 
 	// TODO Annotate id field as an @Id, to mark it as a primary key field.
+	@Id
 	private Integer id;
 
 	// TODO Annotate items field as @OneToMany(mappedBy = "invoice") to note
@@ -26,50 +29,78 @@ public class Invoice {
 	// Annotate items field with @OrderBy("id ASC") annotation to note that set
 	// of them
 	// should be sorted
+
+	@OneToMany(mappedBy = "invoice")
+	@OrderBy("id ASC")
 	private Set<Item> items;
 
 	// TODO add annotation @Temporal(TemporalType.TIMESTAMP) to generate
 	// timestamp for invoice date
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	public Invoice() {
 		// TODO initialize some sorted Set of items, when invoice is created
+
+		items = new LinkedHashSet<Item>();
+
 	}
 
 	public void addItem(Item item) {
 		// TODO add passed item to the items set
+		items.add(item);
+
 	}
 
 	public Integer getId() {
 		// TODO return requested value
-		return 0;
+		return id;
 	}
 
 	public void setId(Integer id) {
 		// TODO save passed value into invoice
+		this.id = id;
+
 	}
 
 	// TODO annotate method with @OneToMany(mappedBy = "invoice") to define
 	// relation between invoice and items
+
+	@OneToMany(mappedBy = "invoice")
 	public Set<Item> getItems() {
 		// TODO return required value
-		return null;
+		return items;
 	}
 
 	// TODO annotate method with @PrePersist to define that method should be
 	// called before saving data
+	@PrePersist
 	protected void onPrePersist() {
 		// TODO set date field to current system date
+		DateFormat df = new SimpleDateFormat("dd/mm/yy");
+		Date date = new Date();
+		df.format(date);
 	}
 
 	public Float getTotalAmount() {
 		// TODO return total price of all the items in the invoice
-		return 0f;
+
+		float totalPrice = 0;
+		for (Item item : items) {
+			totalPrice += item.getCount() * item.getPrice();
+		}
+
+		return totalPrice;
 	}
 
 	public Integer getItemNo() {
 		// TODO return number of items in invoice
-		return 0;
+		
+		int numOfItems = 0;
+		for (Item item : items) {
+			numOfItems += item.getCount();
+		}
+		return numOfItems;
 	}
 
 	@Override

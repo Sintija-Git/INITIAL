@@ -19,8 +19,10 @@ public class InvoiceManager {
 	}
 
 	public Invoice createInvoice(Integer id) {
-		Invoice invoice = null;
 		// TODO Create new Invoice, set its id
+		Invoice invoice = new Invoice();
+		invoice.setId(id);
+		
 		// Save invoice object into database
 		persist(invoice);
 		return invoice;
@@ -29,17 +31,33 @@ public class InvoiceManager {
 	public Item createInvoiceItem(Invoice invoice, Integer id, String name, Float price, Integer quantity) {
 		// TODO create new Item, set its properties and save it in database
 		// TODO return reference to the created item
-		return null;
+		Item invItem = new Item();
+		invItem.setInvoice(invoice);
+		invItem.setId(id);
+		invItem.setName(name);
+		invItem.setPrice(price);
+		invItem.setCount(quantity);
+		
+		persist(invItem);
+		return invItem;
 	}
 
 	public Item createItem(Integer id, String name, Float price, Integer quantity) {
 		// TODO create new Item, set its properties and save it in database
 		// and return reference to it
-		return null;
+		Item item = new Item();
+		item.setId(id);
+		item.setName(name);
+		item.setPrice(price);
+		item.setCount(quantity);
+		persist(item);
+		return item;
 	}
 
 	public void addItemToInvoice(Invoice invoice, Item item) {
 		// TODO add passed item to the passed invoice
+		invoice.addItem(item);
+		
 	}
 
 	public void persist(Object o) {
@@ -61,7 +79,7 @@ public class InvoiceManager {
 
 	public Item searchItem(Integer id) {
 		// TODO search item in database and return reference to it
-		return null;
+		return em.find(Item.class, id);
 	}
 
 	public void clearData() {
